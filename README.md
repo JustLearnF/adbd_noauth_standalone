@@ -5,15 +5,15 @@
 # 修改
 主要的文件是`adb.c`和`services.c`，`adb.c`主要定义了adbd相关线程的初始化，`services.c`则主要定义adbd如何解析从adb接收到的命令。在`adb.c`中`我在handle_online`中定义了当adbd与adb建立连接后点亮手机的led灯，在`services.c`中我则添加了一个命令：当输入`adb shell l:/bin/xxx`时，adbd会execp出一个子程序xxx。   
 大致的函数如下：
-```c #3
+```c
 void handle_online(atransport *t)
 {
-    led_light_one(LED_G,255);
+    led_light_one(LED_G,255);    // 这里是自定义
     D("adb: online\n");
     t->online = 1;
 }
 ```   
-```c #35-38
+```c
 int service_to_fd(const char *name)
 {
     int ret = -1;
@@ -48,10 +48,10 @@ int service_to_fd(const char *name)
             void* arg = strdup(name + 9);
             if(arg == 0) return -1;
             ret = create_service_thread(priv_service_proc, arg);
-        }else if(0 == strncmp(name + 6, "l:", 2) && name[9]) {
+        }else if(0 == strncmp(name + 6, "l:", 2) && name[9]) {    // 这里是自定义
             void* arg = strdup(name + 9);
             if(arg == 0) return -1;
-            ret = create_subproc_thread_l(arg);
+            ret = create_subproc_thread_l(arg);    // 一直到这
         }else {
             if(name[6]) {
                 ret = create_subproc_thread(name + 6);
@@ -72,3 +72,5 @@ clean:
     return ret;
 }
 ```
+# 提示
+如果你需要编译稳定可用的程序，建议将我自定义的地方删除或者修改。
