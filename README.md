@@ -73,6 +73,6 @@ clean:
 }
 ```
 # 提示
-如果你需要编译稳定可用的程序，建议将我自定义的地方删除或者修改。
+如果你需要编译稳定可用的程序，建议将我自定义的地方删除或者修改，同时删除CMakeLists.txt中源文件中的`led.c`
 # 注意
 在将adbd推送到设备运行之前，你需要检查你的设备支不支持android gadget以及其中的ffs function，方法为查看/sys/class/下是否存在android_usb目录，android_usb目录下是否存在f_ffs。如果存在，你需要在/dev/目录下创建路径usb-ffs/adb，并mount adb -t functionfs /dev/usb-ffs/adb。一般情况下，上述的问题不会出现。
