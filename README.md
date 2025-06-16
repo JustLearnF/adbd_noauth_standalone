@@ -5,7 +5,7 @@
 # 修改
 主要的文件是`adb.c`和`services.c`，`adb.c`主要定义了adbd相关线程的初始化，`services.c`则主要定义adbd如何解析从adb接收到的命令。在`adb.c`中`我在handle_online`中定义了当adbd与adb建立连接后点亮手机的led灯，在`services.c`中我则添加了一个命令：当输入`adb shell l:/bin/xxx`时，adbd会execp出一个子程序xxx。   
 大致的函数如下：
-```c
+```c #3
 void handle_online(atransport *t)
 {
     led_light_one(LED_G,255);
@@ -13,7 +13,7 @@ void handle_online(atransport *t)
     t->online = 1;
 }
 ```   
-```c
+```c #35-38
 int service_to_fd(const char *name)
 {
     int ret = -1;
